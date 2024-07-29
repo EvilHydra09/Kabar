@@ -12,6 +12,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.kabarubuntu.presentation.home.HomeScreen
+import com.example.kabarubuntu.presentation.home.HomeViewModel
 import com.example.kabarubuntu.presentation.onboarding.OnBoardingScreen
 import com.example.kabarubuntu.presentation.onboarding.OnBoardingViewModel
 
@@ -40,7 +43,9 @@ fun NavGraph(startDestination: String) {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    Text(text = "News Navigator Screen")
+                    val viewModel :HomeViewModel = hiltViewModel()
+                    val article = viewModel.news.collectAsLazyPagingItems()
+                    HomeScreen(navigate = { /*TODO*/ }, article = article )
                 }
             }
         }

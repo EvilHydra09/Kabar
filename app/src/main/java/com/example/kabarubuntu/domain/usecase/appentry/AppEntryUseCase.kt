@@ -1,4 +1,4 @@
-package com.example.kabarubuntu.domain.usecase
+package com.example.kabarubuntu.domain.usecase.appentry
 
 data class AppEntryUseCase(
     val readAppEntry: ReadAppEntry,

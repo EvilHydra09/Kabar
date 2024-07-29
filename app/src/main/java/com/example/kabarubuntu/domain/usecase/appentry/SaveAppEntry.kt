@@ -1,4 +1,4 @@
-package com.example.kabarubuntu.domain.usecase
+package com.example.kabarubuntu.domain.usecase.appentry
 
 import com.example.kabarubuntu.domain.manger.LocalUserManager
 

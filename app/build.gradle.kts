@@ -85,6 +85,8 @@ dependencies {
     //Retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
+    implementation(libs.logging.interceptor)
+
 
     //Coil
     implementation(libs.coil.compose)
@@ -105,5 +107,11 @@ dependencies {
     implementation (libs.androidx.room.runtime)
     kapt (libs.androidx.room.compiler)
     implementation (libs.room.ktx)
+
+
+    //Material Icon
+    // https://mvnrepository.com/artifact/androidx.compose.material/material-icons-extended
+    implementation(libs.androidx.material.icons.extended)
+
 
 }
