@@ -28,7 +28,7 @@ import com.example.kabarubuntu.domain.model.Article
 import com.example.kabarubuntu.domain.model.Source
 import com.example.kabarubuntu.presentation.home.util.getRelativeTime
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun ArticlePage(article: Article, onClick: () -> Unit) {
     OutlinedCard(onClick = { onClick() }) {
@@ -88,7 +88,7 @@ fun ArticlePage(article: Article, onClick: () -> Unit) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Preview(showBackground = true)
 @Composable
 private fun ArticlePagePreview() {

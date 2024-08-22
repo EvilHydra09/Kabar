@@ -16,7 +16,7 @@ class NewsPagingSource(
 
     private var totalCount = 0
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         val page = params.key ?: 1
         return try {
@@ -53,9 +53,13 @@ class NewsPagingSource(
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+
     private fun formatPublishedAt(date: String): String {
-        val originalFormat = DateTimeFormatter.ISO_DATE_TIME
+        val originalFormat = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            DateTimeFormatter.ISO_DATE_TIME
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
         val desiredFormat = DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a") // Desired format
         val parsedDate = LocalDateTime.parse(date, originalFormat)
         return parsedDate.format(desiredFormat)

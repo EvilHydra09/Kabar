@@ -58,7 +58,7 @@ import com.example.kabarubuntu.presentation.search.SearchScreen
 import com.example.kabarubuntu.presentation.search.SearchViewModel
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NewNavigator() {

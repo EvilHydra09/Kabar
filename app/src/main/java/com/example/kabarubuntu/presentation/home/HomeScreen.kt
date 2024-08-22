@@ -23,7 +23,7 @@ import com.example.kabarubuntu.presentation.common.SearchBar
 import com.example.kabarubuntu.presentation.common.isScrollingUp
 import com.example.kabarubuntu.presentation.home.components.ArticleListHome
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(

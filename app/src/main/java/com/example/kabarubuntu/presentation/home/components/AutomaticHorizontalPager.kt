@@ -15,7 +15,7 @@ import com.example.kabarubuntu.domain.model.Article
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.yield
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AutoScrollingHorizontalPager(

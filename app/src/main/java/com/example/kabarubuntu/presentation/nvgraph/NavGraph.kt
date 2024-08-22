@@ -25,7 +25,7 @@ import com.example.kabarubuntu.presentation.onboarding.OnBoardingViewModel
 import com.example.kabarubuntu.presentation.search.SearchScreen
 import com.example.kabarubuntu.presentation.search.SearchViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun NavGraph(startDestination: String) {
 

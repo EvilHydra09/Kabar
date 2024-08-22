@@ -19,7 +19,7 @@ import androidx.paging.compose.LazyPagingItems
 import com.example.kabarubuntu.domain.model.Article
 import com.example.kabarubuntu.presentation.common.NewsItemCard
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ArticleListHome(
