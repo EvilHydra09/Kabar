@@ -1,45 +1,70 @@
 package com.example.kabarubuntu.presentation.common
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.kabarubuntu.domain.model.Article
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ArticleList(
     article: LazyPagingItems<Article>,
     modifier: Modifier = Modifier,
     onClick: (Article) -> Unit,
-    lazyState : LazyListState
+    lazyState: LazyListState = rememberLazyListState(),
+    contentPadding: PaddingValues = PaddingValues(all = 10.dp)// Add this parameter
 ) {
-
     val handlePagingResult = handlePagingResult(article = article)
 
     if (handlePagingResult) {
         LazyColumn(
             state = lazyState,
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(all = 10.dp)
+            contentPadding = contentPadding, // Use the passed contentPadding
+            modifier = modifier
         ) {
+
             items(count = article.itemCount) {
                 article[it]?.let { item ->
                     NewsItemCard(article = item, onClick = { onClick(item) })
                 }
-
             }
         }
     }
+}
+
+@Composable
+fun ArticleList(
+    articles: List<Article>,
+    modifier: Modifier = Modifier,
+    onClick: (Article) -> Unit,
+    lazyState: LazyListState = rememberLazyListState(),
+    contentPadding: PaddingValues = PaddingValues(all = 10.dp)// Add this parameter
+) {
+        if (articles.isEmpty()) {
+            EmptyScreen(
+            )
+            return
+        }
+        LazyColumn(
+            state = lazyState,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = contentPadding, // Use the passed contentPadding
+            modifier = modifier
+        ) {
+            items(count = articles.size) {
+              val article = articles[it]
+                    NewsItemCard(article = article, onClick = { onClick(article) })
+                }
+            }
 
 }
 
@@ -69,6 +94,11 @@ fun handlePagingResult(
             false
         }
 
+        article.itemCount == 0 -> {
+            EmptyScreen()
+            false
+        }
+
         else -> {
             true
         }
@@ -76,20 +106,22 @@ fun handlePagingResult(
 }
 
 
+
 @Composable
-fun ShimmerColumn(modifier: Modifier = Modifier) {
+fun ShimmerColumn(
+    contentPadding: PaddingValues = PaddingValues(all = 10.dp)
+) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(10.dp)
+        contentPadding = contentPadding
     ) {
+        item {
+
+        }
         items(count = 8) {
             ShimmerNewsItemCard()
         }
     }
 }
 
-@Preview
-@Composable
-private fun ShimmerColumnPreview() {
-    ShimmerColumn()
-}
+

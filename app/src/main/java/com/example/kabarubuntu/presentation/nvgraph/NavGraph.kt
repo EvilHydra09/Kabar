@@ -1,5 +1,7 @@
 package com.example.kabarubuntu.presentation.nvgraph
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,11 +15,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.kabarubuntu.presentation.bookmark.BookmarkScreen
+import com.example.kabarubuntu.presentation.bookmark.BookmarkViewModel
 import com.example.kabarubuntu.presentation.home.HomeScreen
 import com.example.kabarubuntu.presentation.home.HomeViewModel
+import com.example.kabarubuntu.presentation.news_navigator.NewNavigator
 import com.example.kabarubuntu.presentation.onboarding.OnBoardingScreen
 import com.example.kabarubuntu.presentation.onboarding.OnBoardingViewModel
+import com.example.kabarubuntu.presentation.search.SearchScreen
+import com.example.kabarubuntu.presentation.search.SearchViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavGraph(startDestination: String) {
 
@@ -38,15 +46,10 @@ fun NavGraph(startDestination: String) {
         }
         navigation(route = Route.NewsNavigation.route, startDestination = Route.NewsNavigatorScreen.route){
             composable(route = Route.NewsNavigatorScreen.route){
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
-                    val viewModel :HomeViewModel = hiltViewModel()
-                    val article = viewModel.news.collectAsLazyPagingItems()
-                    HomeScreen(navigate = { /*TODO*/ }, article = article )
-                }
+
+                NewNavigator()
+                
+
             }
         }
 

@@ -25,7 +25,6 @@ class MainViewModel @Inject constructor(
         private set
 
     init {
-
         appEntryUseCase.readAppEntry().onEach { showStartFromNewsScreen->
             if(showStartFromNewsScreen){
                 startDestination = Route.NewsNavigation.route
