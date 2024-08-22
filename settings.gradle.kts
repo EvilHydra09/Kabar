@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "KabarUbuntu"
+rootProject.name = "Kabar"
 include(":app")
  
