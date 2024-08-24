@@ -2,6 +2,7 @@ package com.example.kabarubuntu.presentation.detail
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -26,18 +28,29 @@ import com.example.kabarubuntu.domain.model.Article
 import com.example.kabarubuntu.domain.model.Source
 import com.example.kabarubuntu.presentation.detail.component.DetailsTopBar
 import com.example.kabarubuntu.ui.theme.KabarUbuntuTheme
+import com.example.kabarubuntu.util.UIComponent
 
 @Composable
 fun DetailsScreen(
     article: Article,
-    modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     event: (DetailsEvent) -> Unit,
-    isBookmarked: Boolean
+    isBookmarked: Boolean,
+    sideEffect: UIComponent?
 ) {
 
     val context = LocalContext.current
-
+    LaunchedEffect(key1 = sideEffect) {
+        sideEffect?.let {
+            when(sideEffect){
+                is UIComponent.Toast ->{
+                    Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+                    event(DetailsEvent.RemoveSideEffect)
+                }
+                else -> Unit
+            }
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -132,7 +145,8 @@ private fun DetailScreenPreview() {
                 ),
                 onBackClick = { /*TODO*/ },
                 event = { /*TODO*/ },
-                isBookmarked = false
+                isBookmarked = false,
+                sideEffect = null
             )
         }
     }

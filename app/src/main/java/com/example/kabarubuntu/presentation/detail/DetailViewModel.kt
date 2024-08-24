@@ -10,6 +10,7 @@ import com.example.kabarubuntu.domain.model.Article
 import com.example.kabarubuntu.domain.usecase.news.DeleteArticle
 import com.example.kabarubuntu.domain.usecase.news.SelectArticle
 import com.example.kabarubuntu.domain.usecase.news.UpsertArticle
+import com.example.kabarubuntu.util.UIComponent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class DetailViewModel @Inject constructor(
     private val upsertArticleUseCase: UpsertArticle,
 ): ViewModel() {
 
-    var sideEffect by mutableStateOf<String?>(null)
+    var sideEffect by mutableStateOf<UIComponent?>(null)
             private set
 
     private val _isBookmarked = mutableStateOf(false)
@@ -52,20 +53,21 @@ class DetailViewModel @Inject constructor(
         }
 
     }
-
-    private suspend fun deleteArticle(article: Article) {
-        deleteArticleUseCase(article)
-        sideEffect = "Article Deleted"
-    }
     private fun checkIfBookmarked(article: Article) {
         viewModelScope.launch {
             _isBookmarked.value = selectArticleUseCase(article.url) != null
         }
     }
 
+    private suspend fun deleteArticle(article: Article) {
+        deleteArticleUseCase(article)
+        sideEffect = UIComponent.Toast("Article Deleted")
+    }
+
+
     private suspend fun upsertArticle(article: Article) {
         upsertArticleUseCase(article)
-        sideEffect = "Article Saved"
+        sideEffect = UIComponent.Toast("Article Saved")
     }
 
 }

@@ -246,26 +246,16 @@ fun NewNavigator() {
                 }
             ) {
                 val viewModel: DetailViewModel = hiltViewModel()
-
-                if (viewModel.sideEffect != null) {
-                    Toast.makeText(LocalContext.current, viewModel.sideEffect, Toast.LENGTH_SHORT)
-                        .show()
-                    viewModel.onEvent(DetailsEvent.RemoveSideEffect)
-                }
-
                 navController.previousBackStackEntry?.savedStateHandle?.get<Article>("article")
                     ?.let {
-                        LaunchedEffect(it) {
-                            viewModel.onEvent(DetailsEvent.CheckIfBookmarked(it))
-                        }
-
                         DetailsScreen(
                             article = it,
                             onBackClick = {
                                 navController.navigateUp()
                             },
                             event = viewModel::onEvent,
-                            isBookmarked = viewModel.isBookmarked.value
+                            isBookmarked = viewModel.isBookmarked.value,
+                            sideEffect = viewModel.sideEffect
                         )
                     }
 
