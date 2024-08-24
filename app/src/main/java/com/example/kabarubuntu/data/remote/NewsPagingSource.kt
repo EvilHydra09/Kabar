@@ -6,6 +6,8 @@ import androidx.annotation.RequiresApi
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.kabarubuntu.domain.model.Article
+import okio.IOException
+import retrofit2.HttpException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -25,10 +27,8 @@ class NewsPagingSource(
             totalCount += newsResponse.articles.size
 
 
-
-
             val articles = newsResponse.articles.distinctBy { it.title }.map { article ->
-                article.copy(publishedAt = formatPublishedAt(article.publishedAt?: ""))
+                article.copy(publishedAt = formatPublishedAt(article.publishedAt ?: ""))
             }
 
 
@@ -39,7 +39,11 @@ class NewsPagingSource(
             )
 
 
-        } catch (e: Exception) {
+        } catch (e: IOException) {
+            LoadResult.Error(
+                throwable = e
+            )
+        } catch (e: HttpException) {
             LoadResult.Error(
                 throwable = e
             )
@@ -48,7 +52,7 @@ class NewsPagingSource(
 
 
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
-        return state.anchorPosition?.let {anchorPosition ->
+        return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
