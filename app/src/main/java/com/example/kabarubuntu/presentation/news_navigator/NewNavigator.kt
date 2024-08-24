@@ -246,8 +246,7 @@ fun NewNavigator() {
                 }
             ) {
                 val viewModel: DetailViewModel = hiltViewModel()
-                navController.previousBackStackEntry?.savedStateHandle?.get<Article>("article")
-                    ?.let {
+                navController.previousBackStackEntry?.savedStateHandle?.get<Article>("article")?.let {
                         DetailsScreen(
                             article = it,
                             onBackClick = {
