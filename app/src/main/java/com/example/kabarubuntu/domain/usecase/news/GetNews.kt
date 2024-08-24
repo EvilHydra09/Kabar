@@ -5,8 +5,9 @@ import androidx.paging.PagingData
 import com.example.kabarubuntu.domain.model.Article
 import com.example.kabarubuntu.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class GetNews(
+class GetNews @Inject constructor(
     private val newsRepository: NewsRepository
 ) {
 

@@ -4,7 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kabarubuntu.domain.usecase.news.NewsUseCases
+import com.example.kabarubuntu.domain.usecase.news.SelectArticles
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
-    private val newsUseCases: NewsUseCases
+   private val selectArticles: SelectArticles
 ): ViewModel() {
 
     private val _state = mutableStateOf(BookmarkState())
@@ -24,8 +24,8 @@ class BookmarkViewModel @Inject constructor(
 
 
     private fun getArticles(){
-        newsUseCases.selectArticles().onEach {
-            _state.value = _state.value.copy(article = it)
+        selectArticles().onEach {article ->
+            _state.value = _state.value.copy(article = article)
         }.launchIn(viewModelScope)
     }
 

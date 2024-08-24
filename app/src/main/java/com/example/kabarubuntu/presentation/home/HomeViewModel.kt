@@ -4,17 +4,17 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.example.kabarubuntu.domain.usecase.news.NewsUseCases
+import com.example.kabarubuntu.domain.usecase.news.GetNews
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    newsUseCases: NewsUseCases
+    getNews: GetNews
 ):ViewModel() {
 
-    val news = newsUseCases.getNews(
+    val news = getNews(
         source = listOf("bbc-news","abc-news")
     ).cachedIn(viewModelScope)
 

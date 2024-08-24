@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kabarubuntu.domain.usecase.appentry.AppEntryUseCase
+import com.example.kabarubuntu.domain.usecase.appentry.ReadAppEntry
 import com.example.kabarubuntu.presentation.nvgraph.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val appEntryUseCase: AppEntryUseCase
+    private val readAppEntry: ReadAppEntry
 ) :ViewModel(){
 
     var splashCondition by mutableStateOf(true)
@@ -25,7 +25,7 @@ class MainViewModel @Inject constructor(
         private set
 
     init {
-        appEntryUseCase.readAppEntry().onEach { showStartFromNewsScreen->
+        readAppEntry().onEach { showStartFromNewsScreen->
             if(showStartFromNewsScreen){
                 startDestination = Route.NewsNavigation.route
             }

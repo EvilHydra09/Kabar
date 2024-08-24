@@ -2,11 +2,13 @@ package com.example.kabarubuntu.domain.usecase.news
 
 import com.example.kabarubuntu.data.local.NewsDao
 import com.example.kabarubuntu.domain.model.Article
+import com.example.kabarubuntu.domain.repository.NewsRepository
+import javax.inject.Inject
 
-class DeleteArticle(
-    private val newsDao: NewsDao
+class DeleteArticle @Inject constructor(
+    private val newsRepository: NewsRepository
 ) {
     suspend operator fun invoke(article: Article) {
-        newsDao.delete(article)
+        newsRepository.delete(article)
     }
 }
