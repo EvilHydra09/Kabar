@@ -88,36 +88,3 @@ fun ShimmerEffect() {
 private fun ShimmerColumnPreview() {
     ShimmerColumn()
 }
-@Composable
-fun handlePagingResultForHome(
-    article: LazyPagingItems<Article>,
-    modifier: Modifier = Modifier
-): Boolean {
-
-
-    val loadState = article.loadState
-    val error = when {
-        loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
-        loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-        loadState.append is LoadState.Error -> loadState.append as LoadState.Error
-        else -> null
-    }
-
-    return when {
-        loadState.refresh is LoadState.Loading -> {
-            ShimmerColumnForHome(
-                contentPadding = PaddingValues(top = 120.dp, start = 10.dp, end = 10.dp),
-            )
-            false
-        }
-
-        error != null -> {
-            EmptyScreen()
-            false
-        }
-
-        else -> {
-            true
-        }
-    }
-}

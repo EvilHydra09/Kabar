@@ -3,15 +3,22 @@ package com.example.kabarubuntu.presentation.common
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,7 +39,7 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 
 @Composable
-fun EmptyScreen(error: LoadState.Error? = null) {
+fun EmptyScreen(error: LoadState.Error? = null, onRetryClicked: () -> Unit = {}) {
 
     var message by remember {
         mutableStateOf(parseErrorMessage(error = error))
@@ -42,7 +49,7 @@ fun EmptyScreen(error: LoadState.Error? = null) {
         mutableStateOf(R.drawable.no_internet)
     }
 
-    if (error == null){
+    if (error == null) {
         message = "You have not saved news so far !"
         icon = R.drawable.not_found
     }
@@ -60,34 +67,61 @@ fun EmptyScreen(error: LoadState.Error? = null) {
         startAnimation = true
     }
 
-    EmptyContent(alphaAnim = alphaAnimation, message = message, iconId = icon)
+    EmptyContent(
+        alphaAnim = alphaAnimation,
+        message = message,
+        iconId = icon,
+        onRetryClicked = onRetryClicked
+    )
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmptyContent(alphaAnim: Float, message: String, iconId: Int) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+fun EmptyContent(alphaAnim: Float, message: String, iconId: Int, onRetryClicked: () -> Unit) {
+    val isRefreshing by remember { mutableStateOf(false) }
+    val state = rememberPullToRefreshState()
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = { onRetryClicked() },
+        state =state,
+        indicator = {
+            Indicator(
+                isRefreshing = isRefreshing,
+                state = state,
+                modifier = Modifier.align(Alignment.TopCenter).padding(top = 80.dp)
+            )
+        }
     ) {
-        Icon(
-            painter = painterResource(id = iconId),
-            contentDescription = null,
-            tint = if (isSystemInDarkTheme()) LightGray else DarkGray,
+        Column(
             modifier = Modifier
-                .size(120.dp)
-                .alpha(alphaAnim)
-        )
-        Text(
-            modifier = Modifier
-                .padding(10.dp)
-                .alpha(alphaAnim),
-            text = message,
-            style = MaterialTheme.typography.bodyMedium,
-            color = if (isSystemInDarkTheme()) LightGray else DarkGray,
-        )
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                painter = painterResource(id = iconId),
+                contentDescription = null,
+                tint = if (isSystemInDarkTheme()) LightGray else DarkGray,
+                modifier = Modifier
+                    .size(120.dp)
+                    .alpha(alphaAnim)
+                    .clickable {
+                        onRetryClicked()
+                    }
+            )
+            Text(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .alpha(alphaAnim),
+                text = message,
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (isSystemInDarkTheme()) LightGray else DarkGray,
+            )
+        }
     }
+
 }
 
 
@@ -111,5 +145,5 @@ fun parseErrorMessage(error: LoadState.Error?): String {
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun EmptyScreenPreview() {
-    EmptyContent(alphaAnim = 0.3f, message = "Internet Unavailable.",R.drawable.not_found)
+    EmptyContent(alphaAnim = 0.3f, message = "Internet Unavailable.", R.drawable.not_found, {})
 }

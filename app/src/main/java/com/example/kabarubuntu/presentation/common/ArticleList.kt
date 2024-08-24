@@ -50,8 +50,7 @@ fun ArticleList(
     contentPadding: PaddingValues = PaddingValues(all = 10.dp)// Add this parameter
 ) {
         if (articles.isEmpty()) {
-            EmptyScreen(
-            )
+            EmptyScreen()
             return
         }
         LazyColumn(
@@ -71,7 +70,6 @@ fun ArticleList(
 @Composable
 fun handlePagingResult(
     article: LazyPagingItems<Article>,
-    modifier: Modifier = Modifier
 ): Boolean {
 
 
